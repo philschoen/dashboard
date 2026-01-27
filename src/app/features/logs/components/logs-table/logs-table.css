@@ -1,0 +1,35 @@
+.table-wrap {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+}
+
+.row {
+  cursor: pointer;
+}
+
+.row:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.msg {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 0; /* wichtig für ellipsis in table cells */
+}
+
+.empty {
+  padding: 16px;
+  opacity: 0.8;
+}
+
+.level-chip {
+  font-size: 12px;
+}
+.lvl-error, .lvl-critical {
+  font-weight: 700;
+}

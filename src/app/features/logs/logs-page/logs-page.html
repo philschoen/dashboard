@@ -5,3 +5,15 @@
   (filterChange)="onFilterChange($event)"
   (refresh)="reload()"
 ></app-logs-filter-bar>
+
+<div class="table-container">
+  <app-logs-table
+    [logs]="logs"
+    [total]="total"
+    [loading]="loading"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+    (pageChange)="onPageChange($event)"
+    (sortChange)="onSortChange($event)"
+  ></app-logs-table>
+</div>
