@@ -1,4 +1,5 @@
 <h1>Logs</h1>
+
 <app-logs-filter-bar
   [services]="services"
   [installationIds]="installationIds"
@@ -7,13 +8,30 @@
 ></app-logs-filter-bar>
 
 <div class="table-container">
-  <app-logs-table
-    [logs]="logs"
-    [total]="total"
-    [loading]="loading"
-    [pageIndex]="pageIndex"
-    [pageSize]="pageSize"
-    (pageChange)="onPageChange($event)"
-    (sortChange)="onSortChange($event)"
-  ></app-logs-table>
+  <mat-drawer-container autosize class="drawer-container">
+    <mat-drawer-content>
+      <app-logs-table
+        [logs]="logs"
+        [total]="total"
+        [loading]="loading"
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        (pageChange)="onPageChange($event)"
+        (sortChange)="onSortChange($event)"
+        (rowClick)="onRowClick($event)"
+      ></app-logs-table>
+    </mat-drawer-content>
+
+    <mat-drawer
+      position="end"
+      mode="side"
+      [opened]="drawerOpened"
+      (closedStart)="closeDrawer()"
+    >
+      <app-log-detail-drawer
+        [log]="selectedLog"
+        (close)="closeDrawer()"
+      ></app-log-detail-drawer>
+    </mat-drawer>
+  </mat-drawer-container>
 </div>

@@ -1,3 +1,6 @@
-.table-container {
+
+.drawer-container {
     margin-top: 16px;
+    height: calc(100vh - 250px);
+    /* grob: abhängig von Header/Filterbar */
 }

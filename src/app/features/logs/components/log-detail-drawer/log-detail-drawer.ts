@@ -1,11 +1,36 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule, DatePipe, JsonPipe } from '@angular/common';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatExpansionModule } from '@angular/material/expansion';
+
+import { LogEvent } from '../../models/log-event.model';
 
 @Component({
   selector: 'app-log-detail-drawer',
-  imports: [],
+  standalone: true,
+  imports: [
+    CommonModule,
+    DatePipe,
+    JsonPipe,
+    MatButtonModule,
+    MatIconModule,
+    MatDividerModule,
+    MatChipsModule,
+    MatExpansionModule,
+  ],
   templateUrl: './log-detail-drawer.html',
   styleUrl: './log-detail-drawer.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LogDetailDrawer {
+  @Input() log: LogEvent | null = null;
+  @Output() close = new EventEmitter<void>();
 
+  levelClass(level: string | undefined): string {
+    return level ? `lvl-${level.toLowerCase()}` : '';
+  }
 }

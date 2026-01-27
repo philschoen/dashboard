@@ -9,11 +9,14 @@ import { LOGS_DATA_SOURCE } from '../services/logs-data-source';
 import { LogsFilter } from '../models/log-filter.model';
 import { LogsFilterBar } from '../components/logs-filter-bar/logs-filter-bar';
 import { LogsTable } from '../components/logs-table/logs-table';
+import { LogDetailDrawer } from '../components/log-detail-drawer/log-detail-drawer';
+import { LogEvent } from '../models/log-event.model';
+import { MatSidenavModule } from "@angular/material/sidenav";
 
 @Component({
   selector: 'app-logs-page',
   standalone: true,
-  imports: [CommonModule, LogsFilterBar, LogsTable],
+  imports: [CommonModule, LogsFilterBar, LogsTable, LogDetailDrawer, MatSidenavModule],
   templateUrl: './logs-page.html',
   styleUrl: './logs-page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -90,6 +93,19 @@ export class LogsPage {
   onSortChange(s: Sort): void {
     this.sort$.next(s);
   }
+
+  selectedLog: LogEvent | null = null;
+drawerOpened = false;
+
+onRowClick(row: LogEvent): void {
+  this.selectedLog = row;
+  this.drawerOpened = true;
+}
+
+closeDrawer(): void {
+  this.drawerOpened = false;
+  this.selectedLog = null;
+}
 
   reload(): void {
     // einfacher Reload: gleiche Werte nochmal "nexten"
