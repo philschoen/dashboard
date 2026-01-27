@@ -1,0 +1,89 @@
+<div class="bar" [class.disabled]="disabled">
+  <!-- Zeitraum Preset -->
+  <mat-form-field appearance="outline">
+    <mat-label>Zeitraum</mat-label>
+    <mat-select [disabled]="disabled" [formControl]="form.controls.preset">
+      @for (p of presets; track p.value) {
+        <mat-option [value]="p.value">{{ p.label }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Custom Range nur bei preset=custom -->
+  @if (isCustom$ | async) {
+    <mat-form-field appearance="outline" class="range">
+      <mat-label>Von / Bis</mat-label>
+      <mat-date-range-input [rangePicker]="picker" [formGroup]="form.controls.range">
+        <input matStartDate formControlName="start" placeholder="Von" />
+        <input matEndDate formControlName="end" placeholder="Bis" />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  }
+
+  <!-- Level -->
+  <mat-form-field appearance="outline">
+    <mat-label>Level</mat-label>
+    <mat-select [disabled]="disabled" multiple [formControl]="form.controls.levels">
+      @for (lvl of levels; track lvl) {
+        <mat-option [value]="lvl">{{ lvl }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Service -->
+  <mat-form-field appearance="outline">
+    <mat-label>Service</mat-label>
+    <mat-select [disabled]="disabled" [formControl]="form.controls.service">
+      <mat-option [value]="null">Alle</mat-option>
+      @for (s of services; track s) {
+        <mat-option [value]="s">{{ s }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Installation -->
+  <mat-form-field appearance="outline">
+    <mat-label>Installation</mat-label>
+    <mat-select [disabled]="disabled" [formControl]="form.controls.installationId">
+      <mat-option [value]="null">Alle</mat-option>
+      @for (id of installationIds; track id) {
+        <mat-option [value]="id">{{ id }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Suche -->
+  <mat-form-field appearance="outline" class="search">
+    <mat-label>Suche</mat-label>
+    <input
+      matInput
+      [disabled]="disabled"
+      placeholder="Text in Message/Exception…"
+      [formControl]="form.controls.query"
+    />
+    <button
+      mat-icon-button
+      matSuffix
+      type="button"
+      aria-label="Clear search"
+      [disabled]="disabled || !form.controls.query.value"
+      (click)="form.controls.query.setValue('')"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <!-- Aktionen -->
+  <div class="actions">
+    <button mat-stroked-button type="button" [disabled]="disabled" (click)="onReset()">
+      Zurücksetzen
+    </button>
+
+    <button mat-flat-button type="button" [disabled]="disabled" (click)="refresh.emit()">
+      <mat-icon>refresh</mat-icon>
+      Refresh
+    </button>
+  </div>
+</div>
