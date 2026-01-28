@@ -29,7 +29,7 @@ table {
 
 .level-chip {
   font-size: 12px;
+  font-weight: 500;
+  padding: 0 8px;
 }
-.lvl-error, .lvl-critical {
-  font-weight: 700;
-}
+

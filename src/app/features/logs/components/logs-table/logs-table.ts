@@ -43,8 +43,17 @@ export class LogsTable {
     return level;
   }
 
-  // nur für Styling-Hooks (keine Farben hart kodieren musst du nicht – aber Klassen sind ok)
-  levelClass(level: LogLevel): string {
-    return `lvl-${level.toLowerCase()}`;
+  levelStyle(level: LogLevel): { [key: string]: string } {
+    const styles: { [key: string]: { backgroundColor: string; color: string; fontWeight?: string } } = {
+      trace: { backgroundColor: '#f2f2f2', color: '#555' },
+      debug: { backgroundColor: '#e0e0e0', color: '#444' },
+      info: { backgroundColor: '#e3f2fd', color: '#1565c0' },
+      warn: { backgroundColor: '#fff3e0', color: '#ef6c00' },
+      error: { backgroundColor: '#fdecea', color: '#c62828', fontWeight: '600' },
+      critical: { backgroundColor: '#b71c1c', color: '#fff', fontWeight: '700' },
+    };
+    
+    const levelKey = level.toLowerCase() as keyof typeof styles;
+    return styles[levelKey] || {};
   }
 }

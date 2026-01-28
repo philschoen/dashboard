@@ -1,1 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+.mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) .mdc-evolution-chip__text-label {
+  color: inherit !important;
+  font-weight: inherit !important;
+}
