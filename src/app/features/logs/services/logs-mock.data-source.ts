@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, delay } from 'rxjs';
+import { Observable, of, delay, throwError } from 'rxjs';
 import { LogsDataSource } from './logs-data-source';
 import { LogEvent, LogLevel } from '../models/log-event.model';
 import { LogsQuery } from '../models/log-query.model';
@@ -16,9 +16,15 @@ export class MockLogsDataSource implements LogsDataSource {
   }
 
   getLogs(query: LogsQuery): Observable<PagedResult<LogEvent>> {
+
+    if (Math.random() < 0.1) {
+    return throwError(() => new Error('Simulated backend error'));
+  }
+
     const { filter, pageIndex, pageSize, sort } = query;
 
     let filtered = [...this.allLogs];
+
 
     // Filter
     if (filter.levels?.length) filtered = filtered.filter(l => filter.levels.includes(l.level));
@@ -56,7 +62,7 @@ export class MockLogsDataSource implements LogsDataSource {
     const items = filtered.slice(start, start + pageSize);
 
     // kleine künstliche Latenz, damit Loading-State sichtbar ist
-    return of({ items, total }).pipe(delay(150));
+    return of({ items, total }).pipe(delay(50));
   }
 
   private generateMockLogs(count: number): LogEvent[] {

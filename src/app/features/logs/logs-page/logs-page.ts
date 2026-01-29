@@ -1,8 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject, combineLatest, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, of, switchMap, tap } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
 
 
 import { LOGS_DATA_SOURCE } from '../services/logs-data-source';
@@ -11,12 +14,12 @@ import { LogsFilterBar } from '../components/logs-filter-bar/logs-filter-bar';
 import { LogsTable } from '../components/logs-table/logs-table';
 import { LogDetailDrawer } from '../components/log-detail-drawer/log-detail-drawer';
 import { LogEvent } from '../models/log-event.model';
-import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-logs-page',
   standalone: true,
-  imports: [CommonModule, LogsFilterBar, LogsTable, LogDetailDrawer, MatSidenavModule],
+  imports: [CommonModule, LogsFilterBar, LogsTable, LogDetailDrawer, MatSidenavModule, MatIcon, MatButtonModule],
   templateUrl: './logs-page.html',
   styleUrl: './logs-page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -50,7 +53,9 @@ export class LogsPage {
   pageIndex = 0;
   pageSize = 25;
 
-  constructor() {
+  error: string | null = null;
+
+  constructor(private snackBar: MatSnackBar) {
     // Facets laden
     this.ds.getFacetOptions().subscribe(({ services, installationIds }) => {
       this.services = services;
@@ -60,18 +65,33 @@ export class LogsPage {
     // Logs laden, wenn Filter/Paging/Sort sich ändert
     combineLatest([this.filter$, this.page$, this.sort$])
       .pipe(
-        tap(() => (this.loading = true)),
+        tap(() => {
+          this.loading = true;
+          this.error = null;
+        }),
         switchMap(([filter, page, sort]) =>
           this.ds.getLogs({
             filter,
             pageIndex: page.pageIndex,
             pageSize: page.pageSize,
             sort,
-          })
+          }).pipe(
+            catchError(() => {
+              this.loading = false;
+              this.error = 'Logs konnten nicht geladen werden.';
+              this.snackBar.open(
+                'Fehler beim Laden der Logs',
+                'Retry',
+                { duration: 6000 }
+              ).onAction().subscribe(() => this.reload());
+
+              return of({ items: [], total: 0 });
+            })
+          )
         ),
         tap(() => (this.loading = false))
       )
-      .subscribe((res) => {
+      .subscribe(res => {
         this.logs = res.items;
         this.total = res.total;
       });
