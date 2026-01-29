@@ -33,6 +33,8 @@ export class LogsTable {
   @Input() pageIndex = 0;
   @Input() pageSize = 25;
 
+  @Input() selectedId?: string;
+
   @Output() pageChange = new EventEmitter<PageEvent>();
   @Output() rowClick = new EventEmitter<LogEvent>();
   @Output() sortChange = new EventEmitter<Sort>();

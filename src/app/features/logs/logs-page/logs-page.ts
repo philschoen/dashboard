@@ -95,17 +95,22 @@ export class LogsPage {
   }
 
   selectedLog: LogEvent | null = null;
-drawerOpened = false;
+  drawerOpened = false;
 
-onRowClick(row: LogEvent): void {
-  this.selectedLog = row;
-  this.drawerOpened = true;
-}
+  onRowClick(row: LogEvent): void {
+    if (this.selectedLog?.id === row.id) {
+      this.closeDrawer();
+      return;
+    }
 
-closeDrawer(): void {
-  this.drawerOpened = false;
-  this.selectedLog = null;
-}
+    this.selectedLog = row;
+    this.drawerOpened = true;
+  }
+
+  closeDrawer(): void {
+    this.drawerOpened = false;
+    this.selectedLog = null;
+  }
 
   reload(): void {
     // einfacher Reload: gleiche Werte nochmal "nexten"

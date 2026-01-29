@@ -43,6 +43,7 @@
       mat-row
       *matRowDef="let row; columns: displayedColumns"
       class="row"
+      [class.selected]="row.id === selectedId"
       (click)="rowClick.emit(row)"
       tabindex="0"
     ></tr>

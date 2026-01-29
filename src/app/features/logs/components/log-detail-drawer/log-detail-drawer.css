@@ -70,6 +70,39 @@
   font-size: 12px;
 }
 
-.lvl-error, .lvl-critical {
+.lvl-trace {
+  background-color: #f2f2f2 !important;
+  color: #555;
+}
+
+/* DEBUG */
+.lvl-debug {
+  background-color: #e0e0e0 !important;
+  color: #444;
+}
+
+/* INFO */
+.lvl-info {
+  background-color: #e3f2fd !important;
+  color: #1565c0;
+}
+
+/* WARN */
+.lvl-warn {
+  background-color: #fff3e0 !important;
+  color: #ef6c00;
+}
+
+/* ERROR */
+.lvl-error {
+  background-color: #fdecea !important;
+  color: #c62828;
+  font-weight: 600;
+}
+
+/* CRITICAL */
+.lvl-critical {
+  background-color: #b71c1c !important;
+  color: #ffffff;
   font-weight: 700;
 }
