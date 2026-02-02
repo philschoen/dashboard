@@ -1,1 +1,92 @@
-<p>log-detail-drawer works!</p>
+<div class="drawer">
+  <div class="header">
+    <div class="title">
+      <span>Log Details</span>
+      @if (log) {
+        <mat-chip class="level-chip" [class]="levelClass(log.level)">
+          {{ log.level }}
+        </mat-chip>
+      }
+    </div>
+
+    <button mat-icon-button type="button" aria-label="Close" (click)="close.emit()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  @if (!log) {
+    <div class="empty">
+      Wähle einen Logeintrag aus der Tabelle, um Details zu sehen.
+    </div>
+  } @else {
+    <div class="meta">
+      <div class="row">
+        <span class="label">Zeit</span>
+        <span class="value">{{ log.timestampUtc | date:'dd.MM.yyyy HH:mm:ss' }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">Service</span>
+        <span class="value">{{ log.service }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">Installation</span>
+        <span class="value">{{ log.installationId }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">Environment</span>
+        <span class="value">{{ log.environment }}</span>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="section">
+      <div class="section-title">Message</div>
+      <div class="message">{{ log.message }}</div>
+    </div>
+
+    @if (log.exception) {
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Exception</mat-panel-title>
+          <mat-panel-description>
+            {{ log.exception.message || 'Details anzeigen' }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        @if (log.exception.type) {
+          <div class="kv">
+            <span class="label">Typ</span>
+            <span class="value">{{ log.exception.type }}</span>
+          </div>
+        }
+
+        @if (log.exception.message) {
+          <div class="kv">
+            <span class="label">Message</span>
+            <span class="value">{{ log.exception.message }}</span>
+          </div>
+        }
+
+        @if (log.exception.stack) {
+          <div class="stack">
+            <div class="section-title">Stacktrace</div>
+            <pre>{{ log.exception.stack }}</pre>
+          </div>
+        }
+      </mat-expansion-panel>
+    }
+
+    @if (log.properties) {
+      <div class="section">
+        <div class="section-title">Properties</div>
+        <pre class="json">{{ log.properties | json }}</pre>
+      </div>
+    }
+  }
+</div>

@@ -1,42 +1,139 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BehaviorSubject, catchError, combineLatest, of, switchMap, tap } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
 
-import { LogsFilterBar } from '../components/logs-filter-bar/logs-filter-bar';
+
+import { LOGS_DATA_SOURCE } from '../services/logs-data-source';
 import { LogsFilter } from '../models/log-filter.model';
+import { LogsFilterBar } from '../components/logs-filter-bar/logs-filter-bar';
+import { LogsTable } from '../components/logs-table/logs-table';
+import { LogDetailDrawer } from '../components/log-detail-drawer/log-detail-drawer';
+import { LogEvent } from '../models/log-event.model';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-logs-page',
   standalone: true,
-  imports: [
-    CommonModule,
-    LogsFilterBar,
-  ],
+  imports: [CommonModule, LogsFilterBar, LogsTable, LogDetailDrawer, MatSidenavModule, MatIcon, MatButtonModule],
   templateUrl: './logs-page.html',
   styleUrl: './logs-page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LogsPage {
+  private readonly ds = inject(LOGS_DATA_SOURCE);
 
-  services: string[] = ['ApiGateway', 'AuthService', 'UserService'];
-  installationIds: string[] = ['cust-001', 'cust-002', 'cust-003'];
+  // UI state streams
+  private readonly filter$ = new BehaviorSubject<LogsFilter>({
+    preset: '15m',
+    levels: ['Error', 'Critical'],
+  });
 
-  // optional: Filterzustand in der Page halten
-  currentFilter: LogsFilter | null = null;
+  private readonly page$ = new BehaviorSubject<{ pageIndex: number; pageSize: number }>({
+    pageIndex: 0,
+    pageSize: 25,
+  });
+
+  private readonly sort$ = new BehaviorSubject<Sort>({ active: 'timestampUtc', direction: 'desc' });
+
+  loading = false;
+
+  // Options for filterbar
+  services: string[] = [];
+  installationIds: string[] = [];
+
+  // View data
+  logs: any[] = [];
+  total = 0;
+
+  pageIndex = 0;
+  pageSize = 25;
+
+  error: string | null = null;
+
+  constructor(private snackBar: MatSnackBar) {
+    // Facets laden
+    this.ds.getFacetOptions().subscribe(({ services, installationIds }) => {
+      this.services = services;
+      this.installationIds = installationIds;
+    });
+
+    // Logs laden, wenn Filter/Paging/Sort sich ändert
+    combineLatest([this.filter$, this.page$, this.sort$])
+      .pipe(
+        tap(() => {
+          this.loading = true;
+          this.error = null;
+        }),
+        switchMap(([filter, page, sort]) =>
+          this.ds.getLogs({
+            filter,
+            pageIndex: page.pageIndex,
+            pageSize: page.pageSize,
+            sort,
+          }).pipe(
+            catchError(() => {
+              this.loading = false;
+              this.error = 'Logs konnten nicht geladen werden.';
+              this.snackBar.open(
+                'Fehler beim Laden der Logs',
+                'Retry',
+                { duration: 6000 }
+              ).onAction().subscribe(() => this.reload());
+
+              return of({ items: [], total: 0 });
+            })
+          )
+        ),
+        tap(() => (this.loading = false))
+      )
+      .subscribe(res => {
+        this.logs = res.items;
+        this.total = res.total;
+      });
+  }
 
   onFilterChange(filter: LogsFilter): void {
-    this.currentFilter = filter;
+    this.filter$.next(filter);
+    // bei Filterwechsel auf Seite 1
+    this.pageIndex = 0;
+    this.page$.next({ pageIndex: 0, pageSize: this.pageSize });
+  }
 
-    // TODO: hier später Logs neu laden (API/Mock-Service)
-    // z.B. this.loadLogs(filter);
-    console.log('Filter changed:', filter);
+  onPageChange(e: PageEvent): void {
+    this.pageIndex = e.pageIndex;
+    this.pageSize = e.pageSize;
+    this.page$.next({ pageIndex: e.pageIndex, pageSize: e.pageSize });
+  }
+
+  onSortChange(s: Sort): void {
+    this.sort$.next(s);
+  }
+
+  selectedLog: LogEvent | null = null;
+  drawerOpened = false;
+
+  onRowClick(row: LogEvent): void {
+    if (this.selectedLog?.id === row.id) {
+      this.closeDrawer();
+      return;
+    }
+
+    this.selectedLog = row;
+    this.drawerOpened = true;
+  }
+
+  closeDrawer(): void {
+    this.drawerOpened = false;
+    this.selectedLog = null;
   }
 
   reload(): void {
-    // Wird ausgelöst, wenn in der Filterbar der Refresh-Button geklickt wird
-    // TODO: hier später erneut laden
-    console.log('Manual reload');
-    if (this.currentFilter) {
-      // z.B. this.loadLogs(this.currentFilter);
-    }
+    // einfacher Reload: gleiche Werte nochmal "nexten"
+    this.filter$.next(this.filter$.value);
   }
 }

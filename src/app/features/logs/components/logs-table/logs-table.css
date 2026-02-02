@@ -1,0 +1,54 @@
+.table-wrap {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+}
+
+/* Grundzustand */
+.row {
+  cursor: pointer;
+  transition: background-color 120ms ease-in-out;
+}
+
+/* Hover (nur wenn nicht selektiert) */
+.row:hover:not(.selected) td {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Selektierte Zeile */
+.row.selected td {
+  background-color: rgba(25, 118, 210, 0.08); /* Material Blue 700, sehr dezent */
+}
+
+/* Optional: kleine linke Markierung */
+.row.selected td:first-child {
+  border-left: 4px solid #1976d2;
+}
+
+/* Fokus (Keyboard-Navigation) */
+.row:focus-visible td {
+  outline: none;
+  background-color: rgba(25, 118, 210, 0.12);
+}
+
+.msg {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 0; /* wichtig für ellipsis in table cells */
+}
+
+.empty {
+  padding: 16px;
+  opacity: 0.8;
+}
+
+.level-chip {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 0 8px;
+}
+

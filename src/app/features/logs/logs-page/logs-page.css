@@ -1,0 +1,29 @@
+
+.drawer-container {
+    margin-top: 16px;
+    height: calc(100vh - 250px);
+    background: #f6f7f9;
+
+    /* grob: abhängig von Header/Filterbar */
+}
+
+.detail-drawer {
+     background: #ffffff;
+    border-left: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.error-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  margin: 12px 0;
+  border-radius: 8px;
+
+  background: #fdecea;
+  color: #b71c1c;
+}
+
+.error-box mat-icon {
+  font-size: 20px;
+}

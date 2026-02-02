@@ -1,7 +1,47 @@
 <h1>Logs</h1>
+
 <app-logs-filter-bar
   [services]="services"
   [installationIds]="installationIds"
   (filterChange)="onFilterChange($event)"
   (refresh)="reload()"
 ></app-logs-filter-bar>
+
+@if (error) {
+  <div class="error-box">
+    <mat-icon>error_outline</mat-icon>
+    <span>{{ error }}</span>
+    <button mat-button color="primary" (click)="reload()">Retry</button>
+  </div>
+}
+
+<div class="table-container">
+  <mat-drawer-container autosize class="drawer-container">
+    <mat-drawer-content>
+      <app-logs-table
+        [logs]="logs"
+        [total]="total"
+        [loading]="loading"
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [selectedId]="selectedLog?.id"
+        (pageChange)="onPageChange($event)"
+        (sortChange)="onSortChange($event)"
+        (rowClick)="onRowClick($event)"
+      ></app-logs-table>
+    </mat-drawer-content>
+
+    <mat-drawer
+      class="detail-drawer"
+      position="end"
+      mode="side"
+      [opened]="drawerOpened"
+      (closedStart)="closeDrawer()"
+    >
+      <app-log-detail-drawer
+        [log]="selectedLog"
+        (close)="closeDrawer()"
+      ></app-log-detail-drawer>
+    </mat-drawer>
+  </mat-drawer-container>
+</div>
