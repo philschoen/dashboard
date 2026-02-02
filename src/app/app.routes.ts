@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 import { ShellComponent } from './layout/shell/shell';
 import { LOGS_DATA_SOURCE } from './features/logs/services/logs-data-source';
-import { MockLogsDataSource } from './features/logs/services/logs-mock.data-source';
+import { MockLogsDataSource } from './features/logs/services/logs.data-source.mock';
 
 export const routes: Routes = [
     {
@@ -10,8 +10,6 @@ export const routes: Routes = [
         component: ShellComponent,
         children: [
             { path: '', pathMatch: 'full', redirectTo: 'logs' },
-
-            // Platzhalter: Logs kommt in Schritt 3 rein
             {
                 path: 'logs',
                 loadComponent: () =>
