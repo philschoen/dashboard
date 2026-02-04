@@ -41,16 +41,59 @@
   font-weight: 600;
 }
 
+/* Nav list container (keep existing gap/padding) */
 .nav-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;         
-  padding: 0 8px;          
+  gap: 6px;
+  padding: 8px;
 }
 
-.active-link {
-  background: rgba(0, 0, 0, 0.1);
-  margin: 0 5px;
+/* Base look for list links */
+.nav-list a[mat-list-item] {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: rgba(0,0,0,0.87);
+  text-decoration: none;
+  transition: background-color 160ms ease, transform 160ms ease;
+  margin: 0 4px;
+}
+
+/* Icon sizing & alignment */
+.nav-list a[mat-list-item] mat-icon {
+  width: 24px;
+  height: 24px;
+  font-size: 20px;
+  color: rgba(0,0,0,0.54);
+}
+
+/* Hover + focus (keyboard accessible) */
+.nav-list a[mat-list-item]:hover,
+.nav-list a[mat-list-item]:focus-visible {
+  background: rgba(0, 0, 0, 0.06);
+  transform: translateX(2px);
+  outline: none;
+}
+
+/* Active route (sticky primary accent) */
+.nav-list a[mat-list-item].active-link {
+  background: rgba(25, 118, 210, 0.10); /* subtle blue */
+  color: #1565c0;
+  font-weight: 600;
+}
+
+.nav-list a[mat-list-item].active-link mat-icon {
+  color: #1565c0;
+}
+
+/* Disabled item */
+.nav-list a[mat-list-item][disabled],
+.nav-list a[mat-list-item][aria-disabled="true"] {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 

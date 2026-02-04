@@ -8,12 +8,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 
 
-import { LOGS_DATA_SOURCE } from '../services/logs-data-source';
-import { LogsFilter } from '../models/log-filter.model';
-import { LogsFilterBar } from '../components/logs-filter-bar/logs-filter-bar';
-import { LogsTable } from '../components/logs-table/logs-table';
-import { LogDetailDrawer } from '../components/log-detail-drawer/log-detail-drawer';
-import { LogEvent } from '../models/log-event.model';
+import { LOGS_DATA_SOURCE } from '../../services/logs-data-source';
+import { LogsFilter } from '../../models/log-filter.model';
+import { LogsFilterBar } from '../../components/logs-filter-bar/logs-filter-bar';
+import { LogsTable } from '../../components/logs-table/logs-table';
+import { LogDetailDrawer } from '../../components/log-detail-drawer/log-detail-drawer';
+import { LogEvent } from '../../models/log-event.model';
 import { MatIcon } from "@angular/material/icon";
 
 @Component({

@@ -13,7 +13,7 @@ export const routes: Routes = [
             {
                 path: 'logs',
                 loadComponent: () =>
-                    import('./features/logs/logs-page/logs-page').then(m => m.LogsPage),
+                    import('./features/logs/page/logs-page/logs-page').then(m => m.LogsPage),
                 providers: [
                     { provide: LOGS_DATA_SOURCE, useClass: MockLogsDataSource }
                 ]
