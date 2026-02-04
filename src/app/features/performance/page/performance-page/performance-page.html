@@ -1,0 +1,50 @@
+<div class="page">
+    <div class="header">
+        <h2>Performance</h2>
+
+        <mat-button-toggle-group [value]="(range$ | async) ?? '1h'" (change)="setRange($event.value)">
+            <mat-button-toggle value="15m">15m</mat-button-toggle>
+            <mat-button-toggle value="1h">1h</mat-button-toggle>
+            <mat-button-toggle value="24h">24h</mat-button-toggle>
+        </mat-button-toggle-group>
+    </div>
+
+    <mat-tab-group (selectedIndexChange)="setTabByIndex($event)">
+        @for(t of tabs; track t.key){
+        <mat-tab [label]="t.label">
+
+            @let vm = vm$ | async;
+            @if(vm){
+            @if(vm.tab === t.key){
+
+            <!-- KPIs -->
+            <div class="kpi-grid">
+                @if(vm.summaryState.kind === 'ok'){
+                @for(k of vm.tabCfg.kpis; track k){
+                @let metric = getMetric(vm.summaryState.data.metrics, k);
+                <app-metric-kpi-card [title]="metricTitle(k)"
+                    [value]="metric?.value ?? 0"
+                    [unit]="metric?.unit ?? metricUnitLabel(k)"
+                    [status]="metric?.status ?? 'ok'">
+                </app-metric-kpi-card>
+                }
+                }
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-grid">
+                <app-time-series-chart [title]="metricTitle(vm.tabCfg.line.key)"
+                    [unitLabel]="metricUnitLabel(vm.tabCfg.line.key)" [state]="vm.lineState">
+                </app-time-series-chart>
+
+                <app-top-services-bar-chart [title]="'Top Services – ' + metricTitle(vm.tabCfg.top.key)"
+                    [unitLabel]="metricUnitLabel(vm.tabCfg.top.key)" [state]="vm.topState">
+                </app-top-services-bar-chart>
+            </div>
+
+            }
+            }
+        </mat-tab>
+        }
+    </mat-tab-group>
+</div>

@@ -1,0 +1,11 @@
+<mat-card class="kpi-card" [class.ok]="status==='ok'" [class.warn]="status==='warn'" [class.critical]="status==='critical'">
+  <div class="top">
+    <div class="title">{{ title }}</div>
+    <mat-icon class="status-icon">{{ iconForStatus(status) }}</mat-icon>
+  </div>
+
+  <div class="value">
+    {{ value }}
+    <span class="unit">{{ unit }}</span>
+  </div>
+</mat-card>

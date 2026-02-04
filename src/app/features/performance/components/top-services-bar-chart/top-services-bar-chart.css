@@ -1,0 +1,14 @@
+.chart-card {
+  padding: 12px;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.empty {
+  padding: 16px;
+  opacity: 0.8;
+}

@@ -1,0 +1,25 @@
+.chart-card {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 12px;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.empty {
+  padding: 16px;
+  opacity: 0.8;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 12px;
+}
+
+
