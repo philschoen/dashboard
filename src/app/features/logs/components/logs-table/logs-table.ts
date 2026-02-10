@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -14,7 +14,6 @@ import { LogEvent, LogLevel } from '../../models/log-event.model';
   standalone: true,
   imports: [
     CommonModule,
-    DatePipe,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
