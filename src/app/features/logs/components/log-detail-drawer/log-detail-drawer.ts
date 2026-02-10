@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule, DatePipe, JsonPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,8 +14,6 @@ import { LogEvent } from '../../models/log-event.model';
   standalone: true,
   imports: [
     CommonModule,
-    DatePipe,
-    JsonPipe,
     MatButtonModule,
     MatIconModule,
     MatDividerModule,
