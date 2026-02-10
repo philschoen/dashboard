@@ -1,0 +1,33 @@
+.kpi-card {
+  padding: 12px;
+}
+
+.kpi-card .top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.kpi-card .title {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.kpi-card .value {
+  margin-top: 8px;
+  font-size: 28px;
+  font-weight: 600;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.kpi-card .unit {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.kpi-card .status-icon {
+  opacity: 0.85;
+}

@@ -1,0 +1,30 @@
+<mat-card class="chart-card">
+  <div class="card-title">{{ title }}</div>
+
+  @switch(state.kind){
+    @case ('loading'){
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+
+    @case ('error') {
+        <div class="empty">
+            Daten konnten nicht geladen werden.
+        </div>
+    }
+
+    @case('ok') {
+        @if(state.data) {
+            <apx-chart
+              [series]="series"
+              [chart]="chart"
+              [stroke]="stroke"
+              [dataLabels]="dataLabels"
+              [xaxis]="xaxis"
+              [yaxis]="yaxis"
+              [grid]="grid"
+              [tooltip]="tooltip"
+            ></apx-chart>
+        }
+    }
+  }
+</mat-card>
