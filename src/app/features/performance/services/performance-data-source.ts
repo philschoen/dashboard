@@ -24,7 +24,14 @@ export type TopFor<K extends PerformanceMetricKey> =
   K extends SystemMetricKey ? SystemTopServices :
   DbTopServices;
 
+  export interface PerformanceServiceOption {
+  id: string;
+  name: string;
+}
+
 export interface PerformanceDataSource {
+
+   getServices(): Observable<PerformanceServiceOption[]>;
   /**
    * Liefert KPI-Werte (z. B. für Cards). Kann API/System/DB gemischt enthalten,
    * je nachdem, wie die Page später filtert.

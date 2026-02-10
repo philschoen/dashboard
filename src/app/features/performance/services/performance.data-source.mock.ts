@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, delay, throwError } from 'rxjs';
 
-import { PerformanceDataSource } from './performance-data-source';
+import { PerformanceDataSource, PerformanceServiceOption } from './performance-data-source';
 
 import { MetricUnit, MetricPoint, MetricStatus } from '../models/metric.model';
 import { PerformanceMetricKey } from '../models/performance-metric.model';
@@ -69,6 +69,11 @@ export class MockPerformanceDataSource implements PerformanceDataSource {
   private readonly errorProbability = 0.00;
 
   // --------- Public API ---------
+
+
+  getServices(): Observable<PerformanceServiceOption[]> {
+    return of(this.services.map(s => ({ id: s.id, name: s.name }))).pipe(delay(50));
+  }
 
   getSummary(serviceId: string): Observable<import('../models/metric.model').MetricSummaryBase<PerformanceMetricKey>> {
     if (Math.random() < this.errorProbability) {
@@ -174,7 +179,7 @@ export class MockPerformanceDataSource implements PerformanceDataSource {
         unit: unitForMetric(metricKey)
       };
     })
-    .sort((a, b) => b.value - a.value);
+      .sort((a, b) => b.value - a.value);
 
     return of({
       metricKey,
