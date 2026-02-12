@@ -1,0 +1,109 @@
+<mat-card class="defs-card">
+  <div class="defs-header">
+    <div class="defs-title">
+      <div class="h1">Verfügbare Jobs</div>
+      <div class="sub">Wähle einen Job aus und starte ihn auf der gewünschten Instanz.</div>
+    </div>
+
+    <mat-form-field appearance="outline" class="search">
+      <mat-label>Suche</mat-label>
+      <input
+        matInput
+        [value]="query()"
+        (input)="query.set($event.target.value)"
+        placeholder="Name, Key, TargetType…" />
+
+      @if (query()) {
+        <button mat-icon-button matSuffix aria-label="Clear" (click)="clearSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
+      } @else {
+        <mat-icon matSuffix>search</mat-icon>
+      }
+    </mat-form-field>
+  </div>
+
+  <div class="defs-body">
+    @if (filteredJobs().length === 0) {
+      <div class="empty">
+        <mat-icon>search_off</mat-icon>
+        <div>
+          <div class="empty-title">Keine Treffer</div>
+          <div class="empty-sub">Passe deine Suche an.</div>
+        </div>
+      </div>
+    } @else {
+      <div class="tiles">
+        @for (job of filteredJobs(); track trackById($index, job)) {
+          <button
+            type="button"
+            class="tile"
+            [class.selected]="isSelected(job.id)"
+            [class.danger]="job.isDangerous"
+            (click)="onTileClick(job.id)">
+
+            <div class="tile-top">
+              <div class="tile-title">
+                <span class="title-text">{{ job.name }}</span>
+
+                @if (job.isDangerous) {
+                  <span class="badge badge-danger">
+                    <mat-icon class="badge-icon">warning</mat-icon>
+                    Riskant
+                  </span>
+                }
+              </div>
+
+              <mat-icon class="chev">chevron_right</mat-icon>
+            </div>
+
+            <div class="tile-desc">
+              {{ job.description || 'Keine Beschreibung vorhanden.' }}
+            </div>
+
+            <div class="tile-meta">
+              <span class="meta-pill">
+                <mat-icon class="meta-icon">key</mat-icon>
+                <span class="meta-text">{{ job.key }}</span>
+              </span>
+
+              @if (job.targetType) {
+                <span class="meta-pill">
+                  <mat-icon class="meta-icon">my_location</mat-icon>
+                  <span class="meta-text">{{ job.targetType }}</span>
+                </span>
+              }
+
+              @if (job.category) {
+                <span class="meta-pill">
+                  <mat-icon class="meta-icon">category</mat-icon>
+                  <span class="meta-text">{{ job.category }}</span>
+                </span>
+              }
+            </div>
+          </button>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="defs-footer">
+    <div class="footer-left">
+      @if (selectedJobId) {
+        <mat-icon class="ok">check_circle</mat-icon>
+        <span>Job ausgewählt</span>
+      } @else {
+        <mat-icon class="hint">info</mat-icon>
+        <span>Wähle einen Job aus.</span>
+      }
+    </div>
+
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!selectedJobId"
+      (click)="onRunClick()">
+      Job ausführen
+    </button>
+  </div>
+</mat-card>

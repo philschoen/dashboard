@@ -1,0 +1,265 @@
+/* Layout */
+.container {
+  height: calc(100vh - 64px);
+}
+
+.container ::ng-deep .mat-drawer-content {
+  position: static;
+}
+
+.content {
+  padding: 16px;
+  overflow-x: hidden;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 16px;
+  min-width: 0;
+}
+
+.card {
+  border-radius: 16px;
+}
+
+.spacer {
+  flex: 1;
+}
+
+/* Job Definition List */
+mat-list-item.selected {
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.secondary {
+  opacity: 0.75;
+  font-size: 12px;
+}
+
+/* Make list items taller and allow wrapping of title/secondary text */
+mat-list-item {
+  align-items: flex-start;
+  min-height: 64px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.title-row span {
+  display: block;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.secondary {
+  white-space: normal;
+}
+
+/* Job Runs Table */
+.runs-table {
+  width: 100%;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+/* Drawer */
+.drawer {
+  width: 420px;
+  padding: 16px;
+}
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.drawer-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.drawer-subtitle {
+  opacity: 0.75;
+  font-size: 12px;
+}
+
+.drawer-section {
+  margin-top: 16px;
+}
+
+.section-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.meta {
+  margin: 10px 0;
+  display: grid;
+  gap: 6px;
+}
+
+.hint {
+  opacity: 0.75;
+  padding: 8px 0;
+}
+
+/* Filter bar */
+.filters {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 12px 0 6px;
+}
+
+.filters mat-form-field {
+  width: 200px;
+  min-width: 140px;
+}
+
+.filters .search {
+  flex: 1 1 240px;
+  min-width: 160px;
+}
+
+.filters button {
+  height: 40px;
+}
+
+@media (max-width: 800px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filters mat-form-field {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .filters .search {
+    order: 3;
+  }
+}
+
+/* Overview KPIs */
+.overview {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 8px 0 12px;
+}
+
+.kpi {
+  min-width: 110px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,250,0.9));
+  text-align: center;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+}
+
+.kpi-value {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.kpi-label {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.kpi .kpi-icon mat-icon {
+  font-size: 20px;
+  color: inherit;
+}
+
+.kpi.total { background: linear-gradient(180deg,#f7fbff,#f3f9ff);} 
+.kpi.running { background: linear-gradient(180deg,#fff8e1,#fff4d6); cursor: pointer;}
+.kpi.queued { background: linear-gradient(180deg,#e8f0ff,#e1eeff); cursor: pointer;}
+.kpi.succeeded { background: linear-gradient(180deg,#e9f7ee,#e3f5e9); cursor: pointer;}
+.kpi.failed { background: linear-gradient(180deg,#fff1f3,#ffecec); cursor: pointer;}
+.kpi.cancelled { background: linear-gradient(180deg,#f3f3f4,#ececec); cursor: pointer;}
+
+.overview-divider { margin: 10px 0 6px; }
+
+/* Logs */
+.logs {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 12px;
+  max-height: 420px;
+  overflow: auto;
+  border-radius: 12px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.log-line {
+  display: flex;
+  gap: 10px;
+  padding: 3px 0;
+}
+
+.log-level {
+  min-width: 86px;
+  opacity: 0.75;
+}
+
+.log-msg {
+  white-space: pre-wrap;
+}
+
+/* Status Chips */
+/* Hintergrund farbig, Text schwarz */
+mat-chip {
+  color: #000 !important;
+}
+
+.chip-default {
+  background: #e9ecef !important;
+}
+
+.chip-queued {
+  background: #dbeafe !important;
+}
+
+.chip-running {
+  background: #fff3cd !important;
+}
+
+.chip-succeeded {
+  background: #d1e7dd !important;
+}
+
+.chip-failed {
+  background: #f8d7da !important;
+}
+
+.chip-cancelled {
+  background: #e2e3e5 !important;
+}
+
+.chip-danger {
+  background: #ffd6d6 !important;
+  color: #000 !important;
+}

@@ -1,0 +1,56 @@
+<app-jobs-toolbar (refresh)="refresh()"></app-jobs-toolbar>
+
+<mat-drawer-container class="container">
+  <app-jobs-details-drawer
+  #drawer
+  [selectedRun]="selectedRun()"
+  [logs]="logs()"
+  [isLoadingLogs]="isLoadingLogs()"
+  [chipClassForStatus]="chipClassForStatus.bind(this)"
+  (close)="onCloseRunDetails()">
+</app-jobs-details-drawer>
+
+  <div class="content">
+    <div class="grid">
+      <app-jobs-definitions-list
+        [jobs]="jobDefinitions()"
+        [selectedJobId]="selectedJobId()"
+        (selectJob)="onSelectJob($event)"
+        (runSelectedJob)="onRunSelectedJob()">
+      </app-jobs-definitions-list>
+
+      <app-jobs-runs-panel
+        [totalJobs]="totalJobs()"
+        [pending]="pendingCount()"
+        [running]="runningCount()"
+        [succeeded]="succeededCount()"
+        [failed]="failedCount()"
+        [cancelled]="cancelledCount()"
+
+        [queues]="queues()"
+        [types]="types()"
+        [selectedQueue]="selectedQueue()"
+        [selectedType]="selectedType()"
+        [selectedStatuses]="selectedStatuses()"
+        [searchQuery]="searchQuery()"
+
+        [runs]="jobRuns()"
+        [total]="total()"
+        [pageIndex]="pageIndex()"
+        [pageSize]="pageSize()"
+
+        [chipClassForStatus]="chipClassForStatus.bind(this)"
+        [selectedRunId]="selectedRunId()"
+
+        (filterByStatus)="onFilterByStatus($event)"
+        (resetFilters)="onResetFilters()"
+        (queueChange)="selectedQueue.set($event)"
+        (typeChange)="selectedType.set($event)"
+        (statusesChange)="selectedStatuses.set($event)"
+        (searchChange)="searchQuery.set($event)"
+        (openRun)="onOpenRunDetails($event)"
+        (pageChange)="onPageChange($event)">
+      </app-jobs-runs-panel>
+    </div>
+  </div>
+</mat-drawer-container>

@@ -1,0 +1,38 @@
+<div class="overview">
+  <div class="tile" (click)="onFilter(null)">
+    <div class="title">Gesamt</div>
+    <div class="value">{{ total }}</div>
+  </div>
+  <mat-divider vertical></mat-divider>
+  <div class="tile" (click)="onFilter(JobStatus.Running)" [class]="'status-running'">
+    <div class="header">
+      <mat-icon class="status-icon">play_circle</mat-icon>
+      <div class="title">Laufend</div>
+    </div>
+    <div class="value">{{ running }}</div>
+  </div>
+  <mat-divider vertical></mat-divider>
+  <div class="tile" (click)="onFilter(JobStatus.Pending)" [class]="'status-pending'">
+    <div class="header">
+      <mat-icon class="status-icon">schedule</mat-icon>
+      <div class="title">In Warteschlange</div>
+    </div>
+    <div class="value">{{ queued }}</div>
+  </div>
+  <mat-divider vertical></mat-divider>
+  <div class="tile" (click)="onFilter(JobStatus.Succeeded)" [class]="'status-succeeded'">
+    <div class="header">
+      <mat-icon class="status-icon">check_circle</mat-icon>
+      <div class="title">Erfolgreich</div>
+    </div>
+    <div class="value">{{ succeeded }}</div>
+  </div>
+  <mat-divider vertical></mat-divider>
+  <div class="tile" (click)="onFilter(JobStatus.Failed)" [class]="'status-failed'">
+    <div class="header">
+      <mat-icon class="status-icon">error_circle</mat-icon>
+      <div class="title">Fehlgeschlagen</div>
+    </div>
+    <div class="value">{{ failed }}</div>
+  </div>
+</div>

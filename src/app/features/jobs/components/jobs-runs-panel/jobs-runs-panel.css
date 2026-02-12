@@ -1,0 +1,163 @@
+.runs-card {
+  border-radius: 16px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* Header */
+.runs-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 14px 6px 14px;
+}
+
+.runs-title {
+  font-size: 16px;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.runs-sub {
+  opacity: 0.75;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Overview shell */
+.overview-shell {
+  padding: 8px 14px 6px 14px;
+}
+
+/* Filters */
+.filters-shell {
+  padding: 10px 14px 12px 14px;
+  background: rgba(0, 0, 0, 0.02);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: 180px 180px 220px 1fr;
+  gap: 12px;
+  align-items: start;
+  min-width: 0;
+}
+
+.search {
+  min-width: 240px;
+}
+
+.filters-hint {
+  margin-top: 6px;
+  opacity: 0.7;
+  font-size: 12px;
+}
+
+/* Table */
+.table-shell {
+  padding: 6px 14px 0 14px;
+}
+
+.runs-table {
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #fff;
+}
+
+.row {
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.row:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.row.selected {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+}
+
+/* Empty state */
+.empty {
+  padding: 18px 14px;
+}
+
+.empty-title {
+  font-weight: 650;
+}
+
+.empty-sub {
+  margin-top: 4px;
+  opacity: 0.75;
+  font-size: 12px;
+}
+
+/* Paginator */
+.paginator-shell {
+  padding: 8px 8px 10px 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .filters-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 720px) {
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Text immer schwarz */
+mat-chip {
+  color: #000 !important;
+  font-weight: 500;
+}
+
+/* Default */
+.chip-default {
+  background: #e9ecef !important; /* hellgrau */
+}
+
+/* Pending / Queued */
+.chip-pending,
+.chip-queued {
+  background: #dbeafe !important; /* hellblau */
+}
+
+/* Running */
+.chip-running {
+  background: #fff3cd !important; /* hellgelb */
+}
+
+/* Succeeded */
+.chip-succeeded {
+  background: #d1e7dd !important; /* hellgrün */
+}
+
+/* Failed */
+.chip-failed {
+  background: #f8d7da !important; /* hellrot */
+}
+
+/* Cancelled */
+.chip-cancelled {
+  background: #e2e3e5 !important; /* grau */
+}
