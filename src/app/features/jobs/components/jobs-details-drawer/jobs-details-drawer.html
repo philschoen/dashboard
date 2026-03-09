@@ -1,0 +1,47 @@
+<mat-drawer mode="over" position="end" class="drawer">
+  <div class="drawer-header">
+    <div>
+      <div class="drawer-title">Job Details</div>
+      @if (selectedRun; as run) {
+        <div class="drawer-subtitle">{{ run.jobKey }} · {{ run.targetId }}</div>
+      }
+    </div>
+
+    <button mat-icon-button aria-label="Close" (click)="closeDrawer()">✕</button>
+  </div>
+
+  @if (selectedRun; as run) {
+    <div class="drawer-section">
+      <mat-chip [class]="chipClassForStatus?.(run.status)">{{ run.status }}</mat-chip>
+
+      <div class="meta">
+        <div><strong>Requested:</strong> {{ run.requestedAt | date:'short' }}</div>
+        <div><strong>Progress:</strong> {{ run.progressPercent ?? 0 }}%</div>
+      </div>
+
+      <mat-progress-bar mode="determinate" [value]="run.progressPercent ?? 0"></mat-progress-bar>
+    </div>
+
+    <div class="drawer-section">
+      <div class="section-title">Logs</div>
+
+      @if (isLoadingLogs) {
+        <div class="hint">Lade Logs…</div>
+      } @else {
+        <div class="logs">
+          @for (log of logs; track $index) {
+            <div class="log-line">
+              <span class="log-level">[{{ log.level }}]</span>
+              <span class="log-msg">{{ log.message }}</span>
+            </div>
+          }
+          @if (logs.length === 0) {
+            <div class="hint">Keine Logs vorhanden.</div>
+          }
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="hint">Kein JobRun ausgewählt.</div>
+  }
+</mat-drawer>

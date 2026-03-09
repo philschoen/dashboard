@@ -14,11 +14,6 @@ export type SeriesFor<K extends PerformanceMetricKey> =
   K extends SystemMetricKey ? SystemMetricSeries :
   DbMetricSeries;
 
-export type SummaryFor<K extends PerformanceMetricKey> =
-  K extends ApiMetricKey ? ApiMetricSummary :
-  K extends SystemMetricKey ? SystemMetricSummary :
-  DbMetricSummary;
-
 export type TopFor<K extends PerformanceMetricKey> =
   K extends ApiMetricKey ? ApiTopServices :
   K extends SystemMetricKey ? SystemTopServices :
@@ -35,9 +30,6 @@ export interface PerformanceDataSource {
   /**
    * Liefert KPI-Werte (z. B. für Cards). Kann API/System/DB gemischt enthalten,
    * je nachdem, wie die Page später filtert.
-   *
-   * Returns a generic MetricSummaryBase for mixed domains. If you need domain-specific
-   * typing for summaries, prefer calling domain-aware helpers or use `SummaryFor<K>`.
    */
   getSummary(serviceId: string): Observable<import('../models/metric.model').MetricSummaryBase<PerformanceMetricKey>>;
 

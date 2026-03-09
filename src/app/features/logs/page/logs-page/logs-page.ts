@@ -14,7 +14,6 @@ import { LogsFilterBar } from '../../components/logs-filter-bar/logs-filter-bar'
 import { LogsTable } from '../../components/logs-table/logs-table';
 import { LogDetailDrawer } from '../../components/log-detail-drawer/log-detail-drawer';
 import { LogEvent } from '../../models/log-event.model';
-import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-logs-page',
@@ -27,12 +26,10 @@ import { MatIcon } from "@angular/material/icon";
 export class LogsPage {
   private readonly ds = inject(LOGS_DATA_SOURCE);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly initialFilter: LogsFilter = this.createInitialFilter();
 
   // UI state streams
-  private readonly filter = signal<LogsFilter>({
-    preset: '15m',
-    levels: ['Error', 'Critical'],
-  });
+  private readonly filter = signal<LogsFilter>(this.initialFilter);
 
   private readonly page = signal<{ pageIndex: number; pageSize: number }>({
     pageIndex: 0,
@@ -48,7 +45,7 @@ export class LogsPage {
   installationIds: string[] = [];
 
   // View data
-  logs: any[] = [];
+  logs: LogEvent[] = [];
   total = 0;
 
   pageIndex = 0;
@@ -134,7 +131,18 @@ export class LogsPage {
   }
 
   reload(): void {
-    // einfacher Reload: gleiche Werte nochmal "nexten"
-    this.filter.set(this.filter());
+    this.filter.update((current) => ({ ...current }));
+  }
+
+  private createInitialFilter(): LogsFilter {
+    const to = new Date();
+    const from = new Date(to.getTime() - 15 * 60_000);
+
+    return {
+      preset: '15m',
+      fromUtc: from.toISOString(),
+      toUtc: to.toISOString(),
+      levels: ['Error', 'Critical'],
+    };
   }
 }

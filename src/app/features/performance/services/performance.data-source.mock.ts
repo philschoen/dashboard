@@ -3,51 +3,12 @@ import { Observable, of, delay, throwError } from 'rxjs';
 
 import { PerformanceDataSource, PerformanceServiceOption } from './performance-data-source';
 
-import { MetricUnit, MetricPoint, MetricStatus } from '../models/metric.model';
+import { MetricPoint, MetricSummaryItemBase, TopServiceItemBase } from '../models/metric.model';
 import { PerformanceMetricKey } from '../models/performance-metric.model';
 import { unitForMetric, clampForMetric, statusForMetric, generateForMetric } from '../models/performance-metrics-registry';
 import { SeriesFor, TopFor } from './performance-data-source';
 
 // Note: PerformanceMetricKey is imported from `performance-metric.model` (central union).
-
-// Die DTO-Typen kommen aus metric.model.ts via den Domain-Dateien.
-// Für die Rückgabestruktur verwenden wir die Base-Typen implizit über Interface-Signaturen.
-// (Wenn dein Interface explizite Typen erwartet, importiere sie dort entsprechend.)
-type SummaryItem = {
-  metricKey: PerformanceMetricKey;
-  unit: MetricUnit;
-  value: number;
-  status: MetricStatus;
-};
-
-type SummaryDto = {
-  serviceId: string;
-  timestampUtc: string;
-  metrics: SummaryItem[];
-};
-
-type SeriesDto = {
-  serviceId: string;
-  metricKey: PerformanceMetricKey;
-  unit: MetricUnit;
-  intervalSeconds: number;
-  fromUtc: string;
-  toUtc: string;
-  points: MetricPoint[];
-};
-
-type TopItem = {
-  serviceId: string;
-  serviceName: string;
-  value: number;
-  unit: MetricUnit;
-};
-
-type TopDto = {
-  metricKey: PerformanceMetricKey;
-  windowMinutes: number;
-  items: TopItem[];
-};
 
 @Injectable()
 export class MockPerformanceDataSource implements PerformanceDataSource {
@@ -107,7 +68,7 @@ export class MockPerformanceDataSource implements PerformanceDataSource {
     const fromUtc = new Date(Date.now() - 10 * 60_000).toISOString();
     const toUtc = nowUtc;
 
-    const metrics: SummaryItem[] = metricKeys.map(key => {
+    const metrics: MetricSummaryItemBase<PerformanceMetricKey>[] = metricKeys.map(key => {
       const last = this.buildSeriesPoints(serviceId, key, fromUtc, toUtc, 60).at(-1);
       const value = last ? last.value : 0;
       const unit = unitForMetric(key);
@@ -166,7 +127,7 @@ export class MockPerformanceDataSource implements PerformanceDataSource {
 
     // Top-Wert wird aus der Serie abgeleitet (Ø über das Fenster),
     // damit es konsistent und “realistisch” ist.
-    const items: TopItem[] = this.services.map(s => {
+    const items: TopServiceItemBase[] = this.services.map(s => {
       const pts = this.buildSeriesPoints(s.id, metricKey, fromUtc, toUtc, 60);
 
       const avg = pts.reduce((acc, p) => acc + p.value, 0) / Math.max(1, pts.length);
@@ -276,12 +237,6 @@ export class MockPerformanceDataSource implements PerformanceDataSource {
     }
 
     return points;
-  }
-
-
-
-  private clamp(v: number, min: number, max: number): number {
-    return Math.max(min, Math.min(max, v));
   }
 
   // deterministischer PRNG aus Seed (Mulberry32-ähnlich)

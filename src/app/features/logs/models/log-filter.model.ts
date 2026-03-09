@@ -1,4 +1,4 @@
-export type LogLevel = 'Trace' | 'Debug' | 'Info' | 'Warn' | 'Error' | 'Critical';
+import { LogLevel } from './log-event.model';
 
 export type TimePreset = '15m' | '1h' | '24h' | 'custom';
 
