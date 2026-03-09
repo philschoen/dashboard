@@ -17,7 +17,7 @@ export class MockLogsDataSource implements LogsDataSource {
 
   getLogs(query: LogsQuery): Observable<PagedResult<LogEvent>> {
 
-    if (Math.random() < 0.1) {
+    if (Math.random() < 0.02) {
     return throwError(() => new Error('Simulated backend error'));
   }
 

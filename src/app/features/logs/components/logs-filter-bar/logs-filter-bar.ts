@@ -11,7 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 
-import { LogsFilter, LogLevel, TimePreset } from '../../models/log-filter.model';
+import { LogsFilter, TimePreset } from '../../models/log-filter.model';
+import { LogLevel } from '../../models/log-event.model';
 
 type FilterFormValue = {
   preset: TimePreset;
