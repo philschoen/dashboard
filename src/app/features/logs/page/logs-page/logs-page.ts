@@ -26,12 +26,10 @@ import { LogEvent } from '../../models/log-event.model';
 export class LogsPage {
   private readonly ds = inject(LOGS_DATA_SOURCE);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly initialFilter: LogsFilter = this.createInitialFilter();
 
   // UI state streams
-  private readonly filter = signal<LogsFilter>({
-    preset: '15m',
-    levels: ['Error', 'Critical'],
-  });
+  private readonly filter = signal<LogsFilter>(this.initialFilter);
 
   private readonly page = signal<{ pageIndex: number; pageSize: number }>({
     pageIndex: 0,
@@ -134,5 +132,17 @@ export class LogsPage {
 
   reload(): void {
     this.filter.update((current) => ({ ...current }));
+  }
+
+  private createInitialFilter(): LogsFilter {
+    const to = new Date();
+    const from = new Date(to.getTime() - 15 * 60_000);
+
+    return {
+      preset: '15m',
+      fromUtc: from.toISOString(),
+      toUtc: to.toISOString(),
+      levels: ['Error', 'Critical'],
+    };
   }
 }
